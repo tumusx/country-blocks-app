@@ -1,0 +1,80 @@
+# .NET / MAUI build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio / VS Code / Rider
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# Rider
+.idea/
+*.sln.iml
+
+# .NET Core / SDK
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.pidb
+*.svclog
+*.scc
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# Android
+*.apk
+*.aab
+*.jks
+*.keystore
+local.properties
+proguard/
+
+# iOS / Mac
+*.dSYM/
+xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Backup and temp
+*.bak
+*.tmp
+*.temp
+*.log
