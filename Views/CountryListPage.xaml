@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsaasChallenge.ViewModels"
+             xmlns:models="clr-namespace:AsaasChallenge.Models"
+             x:Class="AsaasChallenge.Views.CountryListPage"
+             x:DataType="vm:CountryListViewModel"
+             BackgroundColor="{StaticResource AppBackground}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderBar}"
+              ColumnDefinitions="Auto,*">
+            <ImageButton Grid.Column="0"
+                         Source="back_arrow.png"
+                         Style="{StaticResource HeaderIcon}"
+                         Command="{Binding GoBackCommand}" />
+            <Label Grid.Column="1"
+                   Text="{Binding Title, FallbackValue='Buscar de países via API'}"
+                   Style="{StaticResource HeaderTitle}" />
+        </Grid>
+
+        <!-- Loading state -->
+        <VerticalStackLayout Grid.Row="1"
+                             IsVisible="{Binding IsLoading}"
+                             Spacing="24"
+                             Padding="22,0,22,0"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+            <Label Text="{Binding LoadingLabel, FallbackValue='Buscando países...'}"
+                   FontFamily="OpenSansSemibold"
+                   FontAttributes="Bold"
+                   FontSize="22"
+                   TextColor="{StaticResource TextPrimary}"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center" />
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               Color="{StaticResource Secondary}"
+                               WidthRequest="32"
+                               HeightRequest="32"
+                               HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Loaded state -->
+        <Grid Grid.Row="1"
+              RowDefinitions="*,Auto"
+              Padding="22,20,22,24"
+              RowSpacing="16"
+              IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}, FallbackValue=True}">
+
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding Countries}"
+                            SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Country">
+                        <Border Style="{StaticResource ListItemBorder}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CountryListViewModel}}, Path=ToggleSelectionCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="12">
+                                <Label Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="15"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       VerticalOptions="Center" />
+
+                                <Image Grid.Column="1"
+                                       Source="x_circle.png"
+                                       WidthRequest="24"
+                                       HeightRequest="24"
+                                       IsVisible="{Binding IsSelected}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="1"
+                    Text="Finalizar"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding FinishCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

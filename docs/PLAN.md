@@ -64,39 +64,51 @@ Skills instaladas em `.claude/skills/` (10 selecionadas de 41):
 - [x] `maui-hot-reload-diagnostics` → debug XAML
 - [x] `maui-safe-area` → notch/edge-to-edge
 
-## 🔐 FASE 2 — Login + Persistência de Sessão
-- [ ] `LoginPage` + `LoginViewModel`
-- [ ] `IAuthService` (simula requisição com `Task.Delay`)
-- [ ] `ISessionService` usando `SecureStorage` para persistir usuário
-- [ ] `AppShell` decide rota inicial: Login ou Home
-- [ ] Validações de campo (usuário/senha não vazios)
+## 🎨 FASE 2a — UI Scaffold (todas as telas) ✅
+- [x] `Resources/Styles/Styles.xaml` estendido: `PrimaryButton`, `AppEntry`, `InputBorder`, `ListItemBorder`, `HeaderBar`, `HeaderTitle`, `ScreenTitle`, `Block`, `LogoWordmark`, `HeaderIcon`
+- [x] `App.xaml` registra `InvertedBoolConverter` (CommunityToolkit.Maui)
+- [x] `AppShell.xaml` → `LoginPage` como raiz; rotas `HomePage`, `BlocksPage`, `CountrySearchPage`, `CountryListPage` via `Routing.RegisterRoute`
+- [x] `Views/`: LoginPage, HomePage, BlocksPage, CountrySearchPage, CountryListPage (XAML + code-behind) — pixel-close ao Figma
+- [x] `ViewModels/`: 5 VMs com `[ObservableProperty]`/`[RelayCommand]` (stubs `NotImplementedException` — usuário implementa lógica)
+- [x] `Models/Country.cs`
+- [x] `Services/`: `IAuthService`+impl, `ISessionService`+impl, `ICountryApiService`+impl (HttpClient), `ICountryStorageService`+impl — todos stubs
+- [x] `MauiProgram.cs`: DI de serviços, VMs, views, `HttpClient` com `BaseAddress` restcountries.com/v3.1, `EntryHandler.Mapper` removendo underline Material
+- [x] `MainPage.xaml/.cs` deletado (template default)
+- [x] SVGs próprios criados: `back_arrow.svg`, `x_circle.svg`, `spinner.svg`
+- [x] Preview visual de todas as 5 telas no emulador via swap temporário do AppShell root + seed dos VMs (revertido)
+- [x] Build Android: 0 erros / 0 warnings
 
-## 🏠 FASE 3 — Home
-- [ ] `HomePage` + `HomeViewModel`
-- [ ] Exibir "Olá, {{Usuário}}" (via SessionService)
-- [ ] 2 botões navegando para Desafio 1 e Desafio 2
-- [ ] Versão via `AppInfo.VersionString` no rodapé
-- [ ] Registrar rotas no `AppShell`
+## 🔐 FASE 2b — Login + Persistência de Sessão (⚠️ lógica pendente — usuário)
+- [ ] Implementar `AuthService.LoginAsync` (simula requisição com `Task.Delay`)
+- [ ] Implementar `SessionService` com `SecureStorage` (GetCurrentUser/SaveUser/Clear)
+- [ ] `LoginViewModel.LoginAsync`: valida campos, chama Auth, persiste sessão, navega `//HomePage`
+- [ ] `AppShell.xaml.cs`: checar sessão em `OnStart` e redirecionar para Home se já logado
+- [ ] Validações de campo (usuário/senha não vazios) + `ErrorMessage`
 
-## 🧱 FASE 4 — Desafio 1: Geração de Blocos
-- [ ] `BlocksPage` + `BlocksViewModel`
-- [ ] Input numérico com validação
-- [ ] `FlexLayout` (wrap) ou `CollectionView` com `GridItemsLayout` (Span dinâmico)
-- [ ] Binding reativo: ao mudar número → regenera blocos
+## 🏠 FASE 3 — Home (⚠️ lógica pendente — usuário)
+- [x] `HomePage` + `HomeViewModel` (scaffold)
+- [ ] `HomeViewModel.LoadAsync`: buscar username via SessionService
+- [ ] `GoToBlocksCommand` / `GoToCountrySearchCommand`: `Shell.Current.GoToAsync`
+- [x] Versão via `AppInfo.VersionString` no rodapé (já bindada em `AppVersion`)
 
-## 🌎 FASE 5 — Desafio 2: Busca de Países
-- [ ] `CountrySearchPage` + `CountrySearchViewModel`
-- [ ] 2 botões (Norte / Sul) que navegam para Lista
-- [ ] `ICountryStorageService` (persistir seleção com `Preferences` ou JSON local)
-- [ ] Renderizar países selecionados com botão de remover
+## 🧱 FASE 4 — Desafio 1: Geração de Blocos (⚠️ lógica pendente — usuário)
+- [x] `BlocksPage` + `BlocksViewModel` (scaffold com `FlexLayout` wrap)
+- [ ] `GenerateBlocks`: parse `BlockCountText` para int, limpar/preencher `Blocks` (int enumerável)
+- [ ] Validação de input (número positivo, limite razoável)
 
-## 📋 FASE 6 — Lista de Países + API
-- [ ] `CountryListPage` + `CountryListViewModel`
-- [ ] `ICountryApiService` (HttpClient → `restcountries.com/v3.1/region/{region}`)
-- [ ] Modelo `Country` (nome + bandeira SVG/PNG)
-- [ ] Loading spinner enquanto busca
-- [ ] `CollectionView` com seleção múltipla + checkbox visual
-- [ ] Botão "Finalizar" retorna com lista via query params do Shell
+## 🌎 FASE 5 — Desafio 2: Busca de Países (⚠️ lógica pendente — usuário)
+- [x] `CountrySearchPage` + `CountrySearchViewModel` (scaffold)
+- [ ] `LoadAsync`: buscar selecionados do storage
+- [ ] `SearchNorthAmerica`/`SearchSouthAmerica`: `Shell.Current.GoToAsync($"CountryListPage?region=...")`
+- [ ] `CountryStorageService` com `Preferences` (JSON serializado)
+- [ ] `RemoveCountry`: remover do storage + collection
+
+## 📋 FASE 6 — Lista de Países + API (⚠️ lógica pendente — usuário)
+- [x] `CountryListPage` + `CountryListViewModel` (scaffold com loading state e multi-select)
+- [ ] `CountryApiService.GetByRegionAsync`: HttpClient GET `region/{region}` + parse JSON
+- [ ] `LoadAsync`: setar `IsLoading`, buscar API, popular `Countries`
+- [ ] `ToggleSelection`: alternar `Country.IsSelected`
+- [ ] `FinishAsync`: salvar selecionados no storage + `Shell.Current.GoToAsync("..")`
 
 ## ✅ FASE 7 — Polimento e Entrega
 - [ ] Testar fluxo completo em Android/iOS

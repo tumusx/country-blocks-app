@@ -102,6 +102,43 @@ Ver `docs/DESIGN_TOKENS.md` para tabela completa (espaçamentos, tipografia, scr
 
 ---
 
+### UI Scaffold (todas as 5 telas)
+- ✅ Todas as 5 telas criadas (LoginPage, HomePage, BlocksPage, CountrySearchPage, CountryListPage)
+- ✅ 5 ViewModels criados com `[ObservableProperty]`/`[RelayCommand]` — **todos os handlers lançam `NotImplementedException`** (usuário implementa a lógica)
+- ✅ 4 services (Auth, Session, CountryApi, CountryStorage) com interfaces + impls stub
+- ✅ Model `Country` (Name, FlagUrl, Region, IsSelected)
+- ✅ DI configurada em `MauiProgram.cs`: services (Singleton), VMs+Views (Transient), `HttpClient` com `BaseAddress` restcountries.com/v3.1
+- ✅ AppShell: `LoginPage` como raiz + rotas registradas via `Routing.RegisterRoute`
+- ✅ Styles compartilhados em `Styles.xaml`: `PrimaryButton` (56h, radius 16, primary), `InputBorder` (56h, border #E0E0E0, radius 16), `HeaderBar` (56h, primary bg), `Block` (70x48, radius 8), etc.
+- ✅ `InvertedBoolConverter` do CommunityToolkit registrado em `App.xaml`
+- ✅ `MainPage.xaml/.cs` do template removidos
+- ✅ Build: **0 erros, 0 warnings** em 30s (`dotnet build -f net10.0-android --no-incremental`)
+
+### Decisões UI
+- **Login sem Shell NavBar** (`Shell.NavBarIsVisible="False"`) — Figma mostra logo customizado
+- **Header próprio** nas outras telas (Grid com bg Primary, back arrow + title) em vez de Shell NavBar — assim controlamos 100% do visual do Figma
+- **CollectionView com GridItemsLayout Span=4** para blocos (substituiu FlexLayout wrap) — grid uniforme, sem gaps horizontais desalinhados
+- **CollectionView com TapGestureRecognizer** no CountryListPage — em vez de SelectionMode=Multiple do CV, pra manter o visual do X-filled quando IsSelected
+- **RelativeSource AncestorType** pra bind commands do VM dentro do DataTemplate (padrão MAUI moderno)
+- **QueryProperty(region)** no CountryListViewModel — recebe região via query string do Shell (`GoToAsync("CountryListPage?region=south")`)
+
+---
+
+### Polimento Visual (segunda passada — pixel-close ao Figma)
+- ✅ Reescritos os 5 XAMLs para bater com Figma (spacing, radius, shadows, tipografia)
+- ✅ SVGs próprios criados em `Resources/Images/`: `back_arrow.svg` (branco), `x_circle.svg` (#C5381A com X branco), `spinner.svg`
+- ✅ Removida underline padrão do Material Design nos `Entry` Android via `EntryHandler.Mapper.AppendToMapping("NoUnderline", ...)` no `MauiProgram.cs` (BackgroundTintList transparente no Android, BorderStyle=None no iOS)
+- ✅ Styles refinados em `Styles.xaml`: `PrimaryButton` (56h, radius 14, shadow), `InputBorder` (radius 12), `Block` (radius 8 com shadow), `LogoWordmark` (fallback "ASAAS" 34pt bold caso não haja logo)
+- ✅ Fix `Colors.xaml`: removida `TertiaryBrush` órfã (crash XamlParse); adicionadas `PrimaryDarkText`/`SecondaryDarkText` (referenciadas pelo template default do MAUI)
+- ✅ Preview no emulador de todas as 5 telas via swap temporário do `AppShell` root + seed dos VMs (revertido no fim)
+
+### Decisões de Preview
+- **Seed temporário nos VMs** (`Blocks = { 1..8 }`, `SelectedCountries = { Argentina, Brasil, Paraguai }`, `Countries = { 10 países }`) apenas para screenshot — revertido para `new()` vazio no fim da sessão
+- **`try/catch NotImplementedException`** no `OnAppearing` dos 3 code-behinds (Home/CountrySearch/CountryList) — permite preview sem crash mesmo com handlers stub
+- **`dotnet build -t:Install`** obrigatório após `adb uninstall` — instalação via `adb install` do APK deixa runtime Mono sem `Fast Deploy` sync (`No assemblies found... Exiting...`)
+
+---
+
 ## ❓ Pendências / Riscos
 
 - [ ] Atualizar Xcode para 26.6 pra habilitar build iOS

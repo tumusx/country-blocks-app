@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsaasChallenge.ViewModels"
+             x:Class="AsaasChallenge.Views.LoginPage"
+             x:DataType="vm:LoginViewModel"
+             BackgroundColor="{StaticResource AppBackground}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid Padding="22,0,22,24">
+
+        <VerticalStackLayout Spacing="0"
+                             VerticalOptions="Center">
+
+            <!-- Logo -->
+            <Label Style="{StaticResource LogoWordmark}"
+                   Margin="0,0,0,72" />
+
+            <!-- Form -->
+            <Border Style="{StaticResource InputBorder}"
+                    Margin="0,0,0,16">
+                <Entry Placeholder="Usuário"
+                       Style="{StaticResource AppEntry}"
+                       Text="{Binding Username}"
+                       ReturnType="Next" />
+            </Border>
+
+            <Border Style="{StaticResource InputBorder}"
+                    Margin="0,0,0,16">
+                <Entry Placeholder="Senha"
+                       Style="{StaticResource AppEntry}"
+                       Text="{Binding Password}"
+                       IsPassword="True"
+                       ReturnType="Done"
+                       ReturnCommand="{Binding LoginCommand}" />
+            </Border>
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Danger}"
+                   FontFamily="OpenSansRegular"
+                   FontSize="13"
+                   Margin="4,0,0,8" />
+
+            <Button Text="Entrar"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding LoginCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="{StaticResource Primary}"
+                               Margin="0,16,0,0" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

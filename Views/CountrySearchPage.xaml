@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsaasChallenge.ViewModels"
+             xmlns:models="clr-namespace:AsaasChallenge.Models"
+             x:Class="AsaasChallenge.Views.CountrySearchPage"
+             x:DataType="vm:CountrySearchViewModel"
+             BackgroundColor="{StaticResource AppBackground}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderBar}"
+              ColumnDefinitions="Auto,*">
+            <ImageButton Grid.Column="0"
+                         Source="back_arrow.png"
+                         Style="{StaticResource HeaderIcon}"
+                         Command="{Binding GoBackCommand}" />
+            <Label Grid.Column="1"
+                   Text="Buscar de países via API"
+                   Style="{StaticResource HeaderTitle}" />
+        </Grid>
+
+        <!-- Content -->
+        <Grid Grid.Row="1"
+              RowDefinitions="Auto,*,Auto"
+              Padding="22,20,22,24"
+              RowSpacing="18">
+
+            <Button Grid.Row="0"
+                    Text="Buscar países da América do Sul"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SearchSouthAmericaCommand}" />
+
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding SelectedCountries}"
+                            VerticalOptions="Start">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Country">
+                        <Border Style="{StaticResource ListItemBorder}">
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="12">
+                                <Label Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="15"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       VerticalOptions="Center" />
+
+                                <ImageButton Grid.Column="1"
+                                             Source="x_circle.png"
+                                             BackgroundColor="Transparent"
+                                             BorderWidth="0"
+                                             WidthRequest="24"
+                                             HeightRequest="24"
+                                             Padding="0"
+                                             VerticalOptions="Center"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CountrySearchViewModel}}, Path=RemoveCountryCommand}"
+                                             CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="2"
+                    Text="Buscar países da América do Norte"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SearchNorthAmericaCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

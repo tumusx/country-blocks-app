@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsaasChallenge.ViewModels"
+             x:Class="AsaasChallenge.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             BackgroundColor="{StaticResource AppBackground}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Padding="22,24,22,24">
+
+        <!-- Greeting -->
+        <Label Grid.Row="0"
+               Style="{StaticResource ScreenTitle}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Olá, " />
+                    <Span Text="{Binding Username}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <!-- Buttons centered -->
+        <VerticalStackLayout Grid.Row="1"
+                             Spacing="16"
+                             VerticalOptions="Center">
+            <Button Text="Geração dinâmica de blocos"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding GoToBlocksCommand}" />
+
+            <Button Text="Buscar de países via API"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding GoToCountrySearchCommand}" />
+        </VerticalStackLayout>
+
+        <!-- Version footer -->
+        <Label Grid.Row="2"
+               Text="{Binding AppVersion}"
+               FontFamily="OpenSansSemibold"
+               FontAttributes="Bold"
+               FontSize="13"
+               TextColor="{StaticResource TextPrimary}"
+               HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AsaasChallenge.ViewModels"
+             x:Class="AsaasChallenge.Views.BlocksPage"
+             x:DataType="vm:BlocksViewModel"
+             BackgroundColor="{StaticResource AppBackground}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderBar}"
+              ColumnDefinitions="Auto,*">
+            <ImageButton Grid.Column="0"
+                         Source="back_arrow.png"
+                         Style="{StaticResource HeaderIcon}"
+                         Command="{Binding GoBackCommand}" />
+            <Label Grid.Column="1"
+                   Text="Geração dinâmica de blocos"
+                   Style="{StaticResource HeaderTitle}" />
+        </Grid>
+
+        <!-- Content -->
+        <Grid Grid.Row="1"
+              RowDefinitions="Auto,*"
+              Padding="22,20,22,20"
+              RowSpacing="20">
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource InputBorder}">
+                <Entry Placeholder="Número de blocos a serem gerados..."
+                       Style="{StaticResource AppEntry}"
+                       Text="{Binding BlockCountText}"
+                       Keyboard="Numeric"
+                       ReturnType="Done"
+                       ReturnCommand="{Binding GenerateBlocksCommand}" />
+            </Border>
+
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding Blocks}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="4"
+                                     HorizontalItemSpacing="12"
+                                     VerticalItemSpacing="14" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:Int32">
+                        <Border Style="{StaticResource Block}">
+                            <Label Text="{Binding .}"
+                                   Style="{StaticResource BlockNumber}" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentPage>
