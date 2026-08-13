@@ -3,6 +3,7 @@ using AsaasChallenge.Models;
 using AsaasChallenge.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using AsaasChallenge.Views;                                                                                   
 
 namespace AsaasChallenge.ViewModels;
 
@@ -18,32 +19,30 @@ public partial class CountrySearchViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task LoadAsync()
+    private async Task LoadAsync()
     {
-        throw new NotImplementedException();
+        var saved = await _storageService.GetSelectedAsync();
+
+        SelectedCountries.Clear();
+        foreach (var country in saved.OrderBy(c => c.Name))
+            SelectedCountries.Add(country);
     }
 
     [RelayCommand]
-    private Task SearchNorthAmericaAsync()
+    private Task SearchNorthAmericaAsync() => Shell.Current.GoToAsync($"{nameof(Views.CountryListPage)}?region=north america");
+
+    [RelayCommand]
+    private Task SearchSouthAmericaAsync() => Shell.Current.GoToAsync($"{nameof(Views.CountryListPage)}?region=south america");
+
+    [RelayCommand]
+    private async Task RemoveCountryAsync(Country country)
     {
-        throw new NotImplementedException();
+        if (country is null) return;
+
+        await _storageService.RemoveAsync(country);
+        SelectedCountries.Remove(country);
     }
 
     [RelayCommand]
-    private Task SearchSouthAmericaAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    [RelayCommand]
-    private Task RemoveCountryAsync(Country country)
-    {
-        throw new NotImplementedException();
-    }
-
-    [RelayCommand]
-    private Task GoBackAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task GoBackAsync() => Shell.Current.GoToAsync("..");
 }

@@ -33,26 +33,54 @@ public partial class CountryListViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task LoadAsync()
+    private async Task LoadAsync()
     {
-        throw new NotImplementedException();
+        Title = "Buscador de países";
+        LoadingLabel = "Buscando países...";
+        IsLoading = true;
+        try
+        {
+            var countries = await _apiService.GetByRegionAsync(Region);
+
+            var savedIds = (await _storageService.GetSelectedAsync())
+                .Select(c => c.Id)
+                .ToHashSet();
+
+            foreach (var country in countries)
+                country.IsSelected = savedIds.Contains(country.Id);
+
+            Countries.Clear();
+            foreach (var country in countries)
+                Countries.Add(country);
+
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync] OK — {countries.Count} países ({savedIds.Count} pré-selecionados)");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync] ERRO: {ex.GetType().Name} — {ex.Message}");
+            LoadingLabel = $"Erro: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     [RelayCommand]
     private void ToggleSelection(Country country)
     {
-        throw new NotImplementedException();
+        if (country is null) return;
+        country.IsSelected = !country.IsSelected;
     }
 
     [RelayCommand]
-    private Task FinishAsync()
+    private async Task FinishAsync()
     {
-        throw new NotImplementedException();
+        var selected = Countries.Where(c => c.IsSelected).ToList();
+        await _storageService.SaveSelectedAsync(selected);
+        await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]
-    private Task GoBackAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task GoBackAsync() => Shell.Current.GoToAsync("..");
 }

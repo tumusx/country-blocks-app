@@ -32,10 +32,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		// HTTP client for restcountries.com
+		// HTTP client for restcountries.com (v5)
 		builder.Services.AddHttpClient<ICountryApiService, CountryApiService>(client =>
 		{
-			client.BaseAddress = new Uri("https://restcountries.com/v3.1/");
+			client.BaseAddress = new Uri("https://api.restcountries.com/");
+			client.DefaultRequestHeaders.Authorization =
+				new System.Net.Http.Headers.AuthenticationHeaderValue(
+					"Bearer", "REMOVED_LEAKED_API_KEY");
 		});
 
 		// Services

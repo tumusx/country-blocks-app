@@ -2,8 +2,9 @@ namespace AsaasChallenge.Services;
 
 public class AuthService : IAuthService
 {
-    public Task<bool> LoginAsync(string username, string password)
+    public async Task<bool> LoginAsync(string username, string password)
     {
-        throw new NotImplementedException();
+        await Task.Delay(600);
+        return !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password);
     }
 }

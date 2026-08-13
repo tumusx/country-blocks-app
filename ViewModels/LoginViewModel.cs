@@ -1,4 +1,5 @@
 using AsaasChallenge.Services;
+using AsaasChallenge.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -28,8 +29,44 @@ public partial class LoginViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task LoginAsync()
+    private async Task LoginAsync()
     {
-        throw new NotImplementedException();
+        if (IsBusy) return;
+
+        ErrorMessage = null;
+
+        var user = Username?.Trim() ?? string.Empty;
+        var pass = Password ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
+        {
+            ErrorMessage = "Preencha usuário e senha";
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+
+            var success = await _authService.LoginAsync(user, pass);
+            if (!success)
+            {
+                ErrorMessage = "Usuário ou senha inválidos";
+                return;
+            }
+
+            await _sessionService.SaveUserAsync(user);
+
+            Password = string.Empty;
+            await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Erro ao entrar: {ex.Message}";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

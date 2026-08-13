@@ -1,4 +1,5 @@
 using AsaasChallenge.Services;
+using AsaasChallenge.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -9,7 +10,7 @@ public partial class HomeViewModel : ObservableObject
     private readonly ISessionService _sessionService;
 
     [ObservableProperty]
-    private string username = "Usuário";
+    private string username = "Murillo";
 
     [ObservableProperty]
     private string appVersion = $"Versão {AppInfo.VersionString}";
@@ -20,20 +21,18 @@ public partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task GoToBlocksAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task GoToBlocksAsync() =>
+        Shell.Current.GoToAsync(nameof(BlocksPage));
 
     [RelayCommand]
-    private Task GoToCountrySearchAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task GoToCountrySearchAsync() =>
+        Shell.Current.GoToAsync(nameof(CountrySearchPage));
 
     [RelayCommand]
-    private Task LoadAsync()
+    private async Task LoadAsync()
     {
-        throw new NotImplementedException();
+        var user = await _sessionService.GetCurrentUserAsync();
+        if (!string.IsNullOrWhiteSpace(user))
+            Username = user;
     }
 }

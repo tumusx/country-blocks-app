@@ -25,11 +25,11 @@
         <VerticalStackLayout Grid.Row="1"
                              Spacing="16"
                              VerticalOptions="Center">
-            <Button Text="Geração dinâmica de blocos"
+            <Button Text="Desafio 1 - Geração dinâmica de blocos"
                     Style="{StaticResource PrimaryButton}"
                     Command="{Binding GoToBlocksCommand}" />
 
-            <Button Text="Buscar de países via API"
+            <Button Text="Desafio 2 - Buscar de países via API"
                     Style="{StaticResource PrimaryButton}"
                     Command="{Binding GoToCountrySearchCommand}" />
         </VerticalStackLayout>

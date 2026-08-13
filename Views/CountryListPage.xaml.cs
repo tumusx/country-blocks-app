@@ -16,11 +16,7 @@ public partial class CountryListPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        try
-        {
-            if (_viewModel.LoadCommand.CanExecute(null))
-                _viewModel.LoadCommand.Execute(null);
-        }
-        catch (NotImplementedException) { }
+        if (_viewModel.LoadCommand.CanExecute(null))
+            _viewModel.LoadCommand.Execute(null);
     }
 }

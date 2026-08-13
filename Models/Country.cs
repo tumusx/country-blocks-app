@@ -1,9 +1,15 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace AsaasChallenge.Models;
 
-public class Country
+public partial class Country : ObservableObject
 {
+    public string Id { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
+
     public string FlagUrl { get; set; } = string.Empty;
-    public string Region { get; set; } = string.Empty;
-    public bool IsSelected { get; set; }
+
+    [ObservableProperty]
+    private bool isSelected;
 }

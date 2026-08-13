@@ -64,16 +64,23 @@
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CountryListViewModel}}, Path=ToggleSelectionCommand}"
                                                       CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
-                            <Grid ColumnDefinitions="*,Auto"
+                            <Grid ColumnDefinitions="Auto,*,Auto"
                                   ColumnSpacing="12">
-                                <Label Grid.Column="0"
+                                <Image Grid.Column="0"
+                                       Source="{Binding FlagUrl}"
+                                       WidthRequest="32"
+                                       HeightRequest="22"
+                                       Aspect="AspectFit"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
                                        Text="{Binding Name}"
                                        FontFamily="OpenSansRegular"
                                        FontSize="15"
                                        TextColor="{StaticResource TextPrimary}"
                                        VerticalOptions="Center" />
 
-                                <Image Grid.Column="1"
+                                <Image Grid.Column="2"
                                        Source="x_circle.png"
                                        WidthRequest="24"
                                        HeightRequest="24"
