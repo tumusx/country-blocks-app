@@ -38,7 +38,7 @@ public static class MauiProgram
 			client.BaseAddress = new Uri("https://api.restcountries.com/");
 			client.DefaultRequestHeaders.Authorization =
 				new System.Net.Http.Headers.AuthenticationHeaderValue(
-					"Bearer", "REMOVED_LEAKED_API_KEY");
+					"Bearer", Secrets.RestCountriesApiKey);
 		});
 
 		// Services

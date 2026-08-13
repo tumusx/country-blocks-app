@@ -1,3 +1,6 @@
+# Segredos / credenciais (NÃO commitar)
+Secrets.cs
+
 # .NET / MAUI build output
 bin/
 obj/
