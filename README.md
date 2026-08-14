@@ -1,7 +1,5 @@
 # Country Blocks App
 
-> Desafio técnico Asaas — App .NET MAUI 10 com MVVM + Clean Architecture, integrado à API RestCountries, persistência local e navegação Shell.
-
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![MAUI](https://img.shields.io/badge/MAUI-10.0.60-0038E5)](https://learn.microsoft.com/dotnet/maui/)
 [![C#](https://img.shields.io/badge/C%23-12-239120?logo=csharp)](https://learn.microsoft.com/dotnet/csharp/)
