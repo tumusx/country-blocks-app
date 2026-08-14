@@ -123,22 +123,6 @@ dotnet build -t:Run -f net10.0-android
 └── MauiProgram.cs                    # DI container
 ```
 
----
-
-## ✅ Cobertura dos Requisitos
-
-| # | Requisito | Status |
-|---|---|:-:|
-| 1.1 | .NET MAUI 10 + C# 12+ + restcountries.com | ✅ |
-| 3.x | Login + sessão persistente | ✅ |
-| 4.x | Home com nome + versão do app | ✅ |
-| 5.1 | Geração dinâmica de blocos | ✅ |
-| 6.x | Busca por região + persistência de seleção | ✅ |
-| 7.x | Lista com nome, **bandeira** e Finalizar | ✅ |
-| 8.x | ZIP entregue sem bin/obj | ✅ |
-
----
-
 ## 📄 Documentação
 
 - **[docs/PITCH.md](docs/PITCH.md)** — Pitch técnico completo com diagramas de arquitetura
@@ -146,8 +130,3 @@ dotnet build -t:Run -f net10.0-android
 - **[docs/PLAN.md](docs/PLAN.md)** — Plano de execução por fases
 
 ---
-
-## 👤 Autor
-
-**Murillo Alves da Silva**
-Desafio técnico Asaas — Agosto 2026
