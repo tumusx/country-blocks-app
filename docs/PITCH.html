@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Asaas Challenge — Pitch Técnico</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --primary: #0038E5;
+    --primary-dark: #002BB5;
+    --bg: #FFFFFF;
+    --text: #212121;
+    --text-secondary: #6C757D;
+    --border: #E0E0E0;
+    --code-bg: #F5F5F5;
+    --accent: #F2F5FB;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    color: var(--text);
+    line-height: 1.6;
+    background: var(--bg);
+  }
+  h1 {
+    color: var(--primary);
+    font-size: 2.4em;
+    margin-bottom: 0.2em;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 12px;
+  }
+  h2 {
+    color: var(--primary-dark);
+    font-size: 1.6em;
+    margin-top: 2em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  h3 { color: var(--primary-dark); font-size: 1.2em; }
+  blockquote {
+    border-left: 4px solid var(--primary);
+    background: var(--accent);
+    padding: 12px 20px;
+    margin: 1em 0;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 0.92em;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--accent);
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background: #FAFBFC; }
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    color: #C5381A;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    border-left: 3px solid var(--primary);
+  }
+  pre code { background: none; padding: 0; color: var(--text); }
+  .mermaid {
+    text-align: center;
+    margin: 24px 0;
+    background: #FAFBFC;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2em 0;
+  }
+  .metadata {
+    background: var(--accent);
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin: 1em 0 2em;
+    font-size: 0.95em;
+  }
+  .metadata strong { color: var(--primary-dark); }
+  p em { color: var(--text-secondary); }
+  @media print {
+    body { max-width: none; padding: 20px; }
+    h2 { page-break-after: avoid; }
+    .mermaid, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Asaas Challenge — Pitch Técnico</h1>
+
+<blockquote>
+App .NET MAUI 10 com MVVM + Clean Architecture, integrado à API RestCountries,
+persistência local e navegação Shell.
+</blockquote>
+
+<div class="metadata">
+<strong>Autor:</strong> Murillo Alves da Silva<br>
+<strong>Data:</strong> 13 de agosto de 2026<br>
+<strong>Stack:</strong> .NET MAUI 10 · C# 12 · CommunityToolkit.Mvvm 8.4 · CommunityToolkit.Maui 15.0
+</div>
+
+<hr>
+
+<h2>1. Elevator Pitch</h2>
+<p>Aplicativo mobile Android construído em <strong>.NET MAUI 10</strong> que entrega os 5 fluxos do desafio (Login → Home → Geração de Blocos + Busca de Países → Lista de Países) com <strong>arquitetura em camadas</strong>, <strong>MVVM reativo via source generators</strong>, <strong>injeção de dependência nativa</strong> e <strong>persistência local</strong> (sessão em <code>SecureStorage</code>, seleções em <code>Preferences</code>).</p>
+
+<p>O foco não foi só <em>"fazer funcionar"</em>, mas construir uma base <strong>testável, previsível e extensível</strong>: cada tela tem sua ViewModel isolada, cada I/O externo (API, storage, sessão, auth) é abstraído por interface, e a navegação é declarativa via <strong>Shell</strong>. O resultado são ~1.500 linhas de código C# organizadas em 24 arquivos, sem overengineering — pronto pra receber testes unitários sem refatoração.</p>
+
+<h2>2. Stack Tecnológica</h2>
+<table>
+<thead><tr><th>Camada</th><th>Escolha</th><th>Motivo</th></tr></thead>
+<tbody>
+<tr><td><strong>Framework</strong></td><td>.NET MAUI 10.0.60</td><td>Requisito do desafio</td></tr>
+<tr><td><strong>Linguagem</strong></td><td>C# 12</td><td>Records, pattern matching, nullable ref types</td></tr>
+<tr><td><strong>MVVM</strong></td><td>CommunityToolkit.Mvvm 8.4.2</td><td>Source generators eliminam boilerplate (<code>[ObservableProperty]</code>, <code>[RelayCommand]</code>)</td></tr>
+<tr><td><strong>UI Toolkit</strong></td><td>CommunityToolkit.Maui 15.0.0</td><td>Toast, <code>InvertedBoolConverter</code>, sem dependências pesadas</td></tr>
+<tr><td><strong>HTTP</strong></td><td><code>IHttpClientFactory</code> + <code>System.Net.Http.Json</code></td><td>Padrão .NET, DI first-class, sem NuGet extra</td></tr>
+<tr><td><strong>API</strong></td><td>RestCountries <strong>v5</strong> com autenticação Bearer</td><td>v3.1 foi deprecada em 2026 — migração feita durante o desenvolvimento</td></tr>
+<tr><td><strong>Sessão</strong></td><td><code>SecureStorage</code> (Keychain iOS / Keystore Android)</td><td>Dado sensível não fica em plain-text</td></tr>
+<tr><td><strong>Seleções</strong></td><td><code>Preferences</code> + <code>System.Text.Json</code></td><td>Nativo, zero setup, ideal pra chave-valor JSON</td></tr>
+<tr><td><strong>Navegação</strong></td><td>Shell + <code>[QueryProperty]</code></td><td>Rotas nomeadas, back stack automático</td></tr>
+</tbody>
+</table>
+
+<h2>3. Arquitetura em Camadas</h2>
+<div class="mermaid">
+flowchart TB
+    subgraph V["🎨 Views (XAML)"]
+        LoginPage
+        HomePage
+        BlocksPage
+        CountrySearchPage
+        CountryListPage
+    end
+
+    subgraph VM["🧠 ViewModels (ObservableObject + Commands)"]
+        LoginVM[LoginViewModel]
+        HomeVM[HomeViewModel]
+        BlocksVM[BlocksViewModel]
+        SearchVM[CountrySearchViewModel]
+        ListVM[CountryListViewModel]
+    end
+
+    subgraph S["⚙️ Services (Interfaces + Impls)"]
+        IAuth[IAuthService]
+        ISession[ISessionService]
+        IApi[ICountryApiService]
+        IStorage[ICountryStorageService]
+    end
+
+    subgraph M["📦 Models"]
+        Country
+    end
+
+    subgraph EXT["🌐 Externo"]
+        API[(RestCountries v5)]
+        Sec[(SecureStorage)]
+        Pref[(Preferences)]
+    end
+
+    V -->|"BindingContext + Commands"| VM
+    VM -->|"depende de abstrações"| S
+    VM --> M
+    IAuth -.->|impl| Sec
+    ISession -.->|impl| Sec
+    IApi -.->|HttpClient| API
+    IStorage -.->|impl| Pref
+
+    style V fill:#E8F1FF,stroke:#0038E5
+    style VM fill:#FFF4E5,stroke:#F5A623
+    style S fill:#E8FFF0,stroke:#2FBF71
+    style M fill:#F5F5F5,stroke:#666
+    style EXT fill:#FFEBEE,stroke:#C5381A
+</div>
+
+<p><strong>3 regras invioláveis:</strong></p>
+<ol>
+<li><strong>View nunca fala com Service</strong> — sempre passa pela ViewModel.</li>
+<li><strong>ViewModel nunca instancia Service concreto</strong> — recebe interface via DI (<code>MauiProgram.cs</code>).</li>
+<li><strong>Service não conhece View nem ViewModel</strong> — retorna DTOs/Models puros.</li>
+</ol>
+<p>Isso permite (a) trocar <code>HttpClient</code> por mock em testes, (b) trocar <code>Preferences</code> por SQLite sem tocar em ViewModel, (c) rodar as VMs sem UI.</p>
+
+<h2>4. Fluxo MVVM Reativo (source generators)</h2>
+<p>Como um clique num botão vira uma UI atualizada:</p>
+<div class="mermaid">
+sequenceDiagram
+    actor User
+    participant View as XAML View
+    participant VM as ViewModel<br/>(ObservableObject)
+    participant Svc as Service<br/>(Interface)
+    participant Ext as I/O Externo
+
+    User->>View: Toca em "Buscar países"
+    View->>VM: Command executado<br/>via [RelayCommand]
+    VM->>VM: IsLoading = true<br/>(setter gerado)
+    Note over VM,View: PropertyChanged dispara<br/>UI mostra spinner
+    VM->>Svc: await GetByRegionAsync()
+    Svc->>Ext: HTTP GET
+    Ext-->>Svc: JSON response
+    Svc-->>VM: List&lt;Country&gt;
+    VM->>VM: Countries.Add(...)<br/>IsLoading = false
+    Note over VM,View: ObservableCollection notifica<br/>UI renderiza lista
+</div>
+
+<p><strong>O que os source generators do CommunityToolkit fazem por baixo:</strong></p>
+<ul>
+<li><code>[ObservableProperty] private bool isLoading;</code> → gera <code>public bool IsLoading { get; set; }</code> <strong>com <code>INotifyPropertyChanged</code> já wired</strong>.</li>
+<li><code>[RelayCommand] private async Task LoadAsync()</code> → gera <code>public IAsyncRelayCommand LoadCommand { get; }</code> <strong>thread-safe, com <code>CanExecute</code></strong>.</li>
+</ul>
+<p>Sem source generators, isso são ~30 linhas por propriedade. Com, são 2.</p>
+
+<h2>5. Fluxo: Login + Sessão Persistente</h2>
+<p>Requisito 3.5 do PDF: "em caso de reabertura, redirecionar direto pra Home".</p>
+<div class="mermaid">
+sequenceDiagram
+    actor U as Usuário
+    participant App
+    participant LP as LoginPage
+    participant LVM as LoginViewModel
+    participant Auth as IAuthService
+    participant Sess as ISessionService
+    participant SS as SecureStorage
+    participant HP as HomePage
+
+    Note over App,SS: 🚀 Startup
+    App->>Sess: HasSessionAsync()
+    Sess->>SS: GetAsync("user")
+    alt Sessão existe
+        SS-->>Sess: "Murillo"
+        Sess-->>App: true
+        App->>HP: navega direto
+    else Sessão vazia
+        SS-->>Sess: null
+        Sess-->>App: false
+        App->>LP: mostra Login
+    end
+
+    Note over U,SS: 🔐 Fluxo de Login
+    U->>LP: preenche + Entrar
+    LP->>LVM: LoginCommand
+    LVM->>Auth: LoginAsync(user, pwd)
+    Note right of Auth: Simula backend<br/>(await Task.Delay)
+    Auth-->>LVM: success
+    LVM->>Sess: SaveUserAsync(user)
+    Sess->>SS: SetAsync("user", value)
+    LVM->>HP: Shell.GoToAsync("//Home")
+</div>
+<p><strong>Decisão de segurança:</strong> <code>SecureStorage</code> usa <strong>Android Keystore</strong> por baixo — o dado é criptografado com chave que só o app tem acesso. Poderia ter usado <code>Preferences</code> (mais simples), mas usuário é PII.</p>
+
+<h2>6. Fluxo: Busca + Persistência de Países</h2>
+<p>Requisitos 6.2 e 7.x: seleção persistente entre reaberturas.</p>
+<div class="mermaid">
+sequenceDiagram
+    actor U as Usuário
+    participant SP as CountrySearchPage
+    participant SVM as CountrySearchVM
+    participant LP as CountryListPage
+    participant LVM as CountryListVM
+    participant API as ICountryApiService
+    participant STG as ICountryStorageService
+    participant P as Preferences
+
+    U->>SP: abre tela
+    SP->>SVM: OnAppearing → LoadCommand
+    SVM->>STG: GetSelectedAsync()
+    STG->>P: Get("selected_countries")
+    P-->>STG: JSON
+    STG-->>SVM: List&lt;Country&gt;
+    Note over SP: mostra selecionados atuais
+
+    U->>SP: toca "América do Sul"
+    SP->>LP: Shell.GoToAsync(?region=south america)
+    LP->>LVM: [QueryProperty] Region
+    LVM->>API: GetByRegionAsync("south america")
+    API->>API: title-case → "South America"
+    Note right of API: GET api.restcountries.com/countries/v5<br/>?subregion=South+America&fields=names,codes,flag
+    API-->>LVM: 14 countries + bandeiras
+    LVM->>STG: GetSelectedAsync()
+    STG-->>LVM: HashSet&lt;Id&gt; já salvos
+    LVM->>LVM: marca IsSelected em quem bateu
+
+    U->>LP: toca 3 países + Finalizar
+    LP->>LVM: ToggleSelection ×3, depois FinishCommand
+    LVM->>STG: SaveSelectedAsync(3 selecionados)
+    STG->>P: Set("selected_countries", json)
+    LVM->>SP: Shell.GoToAsync("..")
+    Note over SP: OnAppearing dispara<br/>Load recarrega selecionados
+</div>
+<p><strong>Padrão notável:</strong> <code>OnAppearing</code> na View chama <code>LoadCommand</code> da VM. Não uso <code>MessagingCenter</code> nem eventos — a página <em>pull-refreshes</em> toda vez que aparece. Simples, previsível, sem side effects.</p>
+
+<h2>7. Navegação (Shell)</h2>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Splash
+
+    Splash --> Login: sem sessão
+    Splash --> Home: sessão persistida
+
+    Login --> Home: credenciais válidas
+
+    Home --> Blocks: "Desafio 1"
+    Home --> CountrySearch: "Desafio 2"
+
+    Blocks --> Home: back
+
+    CountrySearch --> CountryList: "América do Norte/Sul"
+    CountryList --> CountrySearch: back / Finalizar
+
+    Home --> Login: (futuro: logout)
+</div>
+<p><strong>Todas as rotas são registradas em <code>AppShell.xaml.cs</code></strong> com <code>nameof(Page)</code>, o que dá refactor-safety no IDE.</p>
+
+<h2>8. Princípios Aplicados</h2>
+
+<h3>Clean Code</h3>
+<table>
+<thead><tr><th>Princípio</th><th>Como aplicado</th></tr></thead>
+<tbody>
+<tr><td><strong>Nomes que dizem o que fazem</strong></td><td><code>GetByRegionAsync</code>, <code>SaveSelectedAsync</code>, <code>ToggleSelection</code> — verbo + intenção, sem <code>Manager</code>/<code>Helper</code></td></tr>
+<tr><td><strong>Funções pequenas</strong></td><td>Nenhum método &gt; 25 linhas. <code>LoadAsync</code> da <code>CountryListViewModel</code> é a maior (~20 linhas com try/catch/finally)</td></tr>
+<tr><td><strong>Sem comentários redundantes</strong></td><td>Comentários só onde há decisão não-óbvia (ex: por que title-case da região)</td></tr>
+<tr><td><strong>Guard clauses cedo</strong></td><td><code>if (country is null) return;</code> em vez de aninhar</td></tr>
+<tr><td><strong>Records para DTOs</strong></td><td><code>CountryDto</code>, <code>NamesDto</code>, <code>FlagDto</code> — imutáveis, uma linha cada</td></tr>
+</tbody>
+</table>
+
+<h3>Clean Architecture (adaptada ao escopo)</h3>
+<table>
+<thead><tr><th>Regra</th><th>Aplicação</th></tr></thead>
+<tbody>
+<tr><td><strong>Dependency Rule</strong></td><td>Views → VMs → Services (nunca ao contrário)</td></tr>
+<tr><td><strong>Interface Segregation</strong></td><td><code>IAuthService</code>, <code>ISessionService</code>, <code>ICountryApiService</code>, <code>ICountryStorageService</code> — cada uma com 1-4 métodos</td></tr>
+<tr><td><strong>Dependency Inversion</strong></td><td>VMs recebem interfaces via construtor; concretes só existem em <code>MauiProgram.cs</code></td></tr>
+<tr><td><strong>Boundaries claras</strong></td><td>DTOs da API (<code>CountryDto</code>) <strong>não vazam</strong> para VMs — mapeados pra <code>Country</code> no service</td></tr>
+<tr><td><strong>Testabilidade</strong></td><td>Todas as VMs podem ser instanciadas em teste unitário passando mocks das interfaces</td></tr>
+</tbody>
+</table>
+
+<h2>9. Decisões Técnicas Notáveis</h2>
+<table>
+<thead><tr><th>#</th><th>Decisão</th><th>Alternativa descartada</th><th>Por quê</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>CommunityToolkit.Mvvm</strong></td><td><code>INotifyPropertyChanged</code> manual</td><td>90% menos código de propriedade</td></tr>
+<tr><td>2</td><td><strong>Preferences + JSON</strong> para seleções</td><td>SQLite</td><td>Overkill pra lista de &lt;30 itens</td></tr>
+<tr><td>3</td><td><strong>SecureStorage</strong> pra usuário</td><td>Preferences</td><td>PII merece Keystore</td></tr>
+<tr><td>4</td><td><strong>Migração para v5</strong> durante o desenvolvimento</td><td>Ficar em v3.1</td><td>v3.1 retornou erro em prod (deprecada em 2026)</td></tr>
+<tr><td>5</td><td><strong>Endpoint <code>?subregion=</code> + title-case</strong></td><td><code>region=americas</code> + filtro client-side</td><td>Menos payload, mais preciso</td></tr>
+<tr><td>6</td><td><strong><code>?fields=names,codes,flag</code></strong></td><td>Trazer objeto completo</td><td>Payload ~10x menor</td></tr>
+<tr><td>7</td><td><strong><code>OrderBy</code> no service</strong></td><td>Ordenar na VM</td><td>Service já entrega pronto — VM não precisa saber</td></tr>
+<tr><td>8</td><td><strong><code>StoredCountry</code> record separado do <code>Country</code></strong></td><td>Serializar <code>Country</code> direto</td><td><code>Country</code> herda <code>ObservableObject</code> (metadados desnecessários no JSON)</td></tr>
+<tr><td>9</td><td><strong>Toast para limite de blocos</strong></td><td>Alert bloqueante</td><td>Menos fricção, não interrompe input</td></tr>
+<tr><td>10</td><td><strong>Shell + rotas nomeadas</strong></td><td>NavigationPage manual</td><td>Refactor-safe, deep-linking gratuito</td></tr>
+</tbody>
+</table>
+
+<h2>10. Cobertura vs. Requisitos do PDF</h2>
+<table>
+<thead><tr><th>Item</th><th>Requisito</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1.1</td><td>.NET MAUI 10, C# 12+, restcountries.com</td><td>✅</td></tr>
+<tr><td>1.1</td><td>iOS ou Android (≥1 rodando)</td><td>✅ Android</td></tr>
+<tr><td>3.1</td><td>Login: campos + botão Entrar</td><td>✅</td></tr>
+<tr><td>3.3</td><td>Simulação de requisição</td><td>✅ (<code>AuthService</code> com delay)</td></tr>
+<tr><td>3.4</td><td>Navegação para Home</td><td>✅</td></tr>
+<tr><td>3.5</td><td>Sessão persistente</td><td>✅ <code>SecureStorage</code></td></tr>
+<tr><td>4.1</td><td>Nome do usuário no topo</td><td>✅</td></tr>
+<tr><td>4.2</td><td>Botões Desafio 1 / Desafio 2</td><td>✅</td></tr>
+<tr><td>4.3</td><td>Versão do app no rodapé</td><td>✅ <code>AppInfo.VersionString</code></td></tr>
+<tr><td>5.1</td><td>Grid dinâmico de blocos</td><td>✅ reativo ao input</td></tr>
+<tr><td>6.1</td><td>Botões América do Norte/Sul</td><td>✅</td></tr>
+<tr><td>6.2</td><td>Lista de selecionados persistida</td><td>✅ <code>Preferences</code> + JSON</td></tr>
+<tr><td>7.1</td><td>Request restcountries com região</td><td>✅ subregion query</td></tr>
+<tr><td>7.2</td><td>Nome <strong>e bandeira</strong> do país</td><td>✅ <code>FlagUrl</code> remoto</td></tr>
+<tr><td>7.3</td><td>Botão Finalizar volta com seleção</td><td>✅</td></tr>
+<tr><td>8.1</td><td>ZIP sem bin/obj</td><td>✅ entregue</td></tr>
+</tbody>
+</table>
+
+<h2>11. O Que Faria Com Mais Tempo</h2>
+<ol>
+<li><strong>Testes unitários</strong> das ViewModels com xUnit + Moq (base já pronta pra isso).</li>
+<li><strong>API key em <code>Constants.cs</code></strong> ao invés de hardcoded em <code>MauiProgram.cs</code>.</li>
+<li><strong>Retry policy</strong> no <code>HttpClient</code> com Polly (exponential backoff em 5xx).</li>
+<li><strong>Toast "Países salvos"</strong> ao clicar em Finalizar.</li>
+<li><strong>Empty state ilustrado</strong> em CountrySearchPage quando nada foi selecionado.</li>
+<li><strong>Logout</strong> na Home (botão) limpando <code>SecureStorage</code>.</li>
+<li><strong>Localização</strong> (pt-BR / en-US) via <code>.resx</code>.</li>
+<li><strong>iOS build</strong> (bloqueado pelo Xcode 26.6 no ambiente atual).</li>
+</ol>
+
+<h2>12. Estrutura de Arquivos</h2>
+<pre><code>AsaasChallenge/
+├── Models/
+│   └── Country.cs               # Id, Name, FlagUrl, IsSelected
+├── Services/
+│   ├── IAuthService.cs          # LoginAsync
+│   ├── AuthService.cs
+│   ├── ISessionService.cs       # Save/Get/Clear + HasSessionAsync
+│   ├── SessionService.cs        # SecureStorage
+│   ├── ICountryApiService.cs    # GetByRegionAsync
+│   ├── CountryApiService.cs     # HttpClient v5 + DTOs internos
+│   ├── ICountryStorageService.cs # Get/Save/Remove/Clear
+│   └── CountryStorageService.cs # Preferences + JSON
+├── ViewModels/
+│   ├── LoginViewModel.cs
+│   ├── HomeViewModel.cs
+│   ├── BlocksViewModel.cs
+│   ├── CountrySearchViewModel.cs
+│   └── CountryListViewModel.cs
+├── Views/
+│   ├── LoginPage.xaml + .cs
+│   ├── HomePage.xaml + .cs
+│   ├── BlocksPage.xaml + .cs
+│   ├── CountrySearchPage.xaml + .cs
+│   └── CountryListPage.xaml + .cs
+├── Resources/
+│   ├── Fonts/ (OpenSans)
+│   ├── Images/ (back_arrow, x_circle, etc)
+│   └── Styles/ (Colors, Styles — tokens do Figma)
+├── App.xaml + .cs               # Startup + rota inicial
+├── AppShell.xaml + .cs          # Registro de rotas
+└── MauiProgram.cs               # DI container + HttpClient</code></pre>
+
+<hr>
+<p style="text-align:center;"><em>Obrigado pela oportunidade. Pronto para conversar sobre qualquer decisão. 🚀</em></p>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    themeVariables: {
+      primaryColor: '#E8F1FF',
+      primaryTextColor: '#212121',
+      primaryBorderColor: '#0038E5',
+      lineColor: '#6C757D',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+    }
+  });
+</script>
+</body>
+</html>
